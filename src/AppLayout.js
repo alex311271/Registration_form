@@ -1,4 +1,3 @@
-
 import styles from './App.module.css';
 
 export const AppLayout = ({
@@ -7,12 +6,13 @@ export const AppLayout = ({
 	onSubmitForm,
 	onEmailBlur,
 	password,
-	onFocus,
 	errorPassword,
 	onPasswordBlur,
 	replayPassword,
 	errorReplayPassword,
 	onReplayPasswordChange,
+	submitButtonRef,
+
 }) => (
 	<div className={styles.App_header}>
 		<form className={styles.form} onSubmit={onSubmitForm}>
@@ -22,9 +22,7 @@ export const AppLayout = ({
 				name="email"
 				value={email}
 				placeholder="Введите адрес почты"
-				// onChange={handleChange}
 				onBlur={onEmailBlur}
-				onFocus={onFocus}
 			></input>
 			{errorEmail && <div className={styles.error}>{errorEmail}</div>}
 			<input
@@ -34,9 +32,8 @@ export const AppLayout = ({
 				value={password}
 				placeholder="Введите пароль"
 				onBlur={onPasswordBlur}
-				onFocus={onFocus}
 			></input>
-			<div className={styles.error}>{errorPassword}</div>
+			{errorPassword && <div className={styles.error}>{errorPassword}</div>}
 			<input
 				className={styles.field}
 				type="password"
@@ -44,10 +41,14 @@ export const AppLayout = ({
 				value={replayPassword}
 				placeholder="Повторите пароль"
 				onChange={onReplayPasswordChange}
-				onFocus={onFocus}
 			></input>
-			<div className={styles.error}>{errorReplayPassword}</div>
-			<button type="submit" name='submit' disabled={!replayPassword || errorReplayPassword}>
+			{errorReplayPassword && <div className={styles.error}>{errorReplayPassword}</div>}
+			<button
+				ref={submitButtonRef}
+				type="submit"
+				name="submit"
+				disabled={!replayPassword || errorReplayPassword}
+			>
 				Отправить
 			</button>
 		</form>
