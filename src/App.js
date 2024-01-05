@@ -6,7 +6,6 @@ const sendForm = (formData) => {
 };
 
 export const App = () => {
-
 	const [email, setEmail] = useState('');
 	const [errorEmail, setEmailError] = useState('');
 	const [password, setPassword] = useState('');
@@ -27,14 +26,23 @@ export const App = () => {
 		} else {
 			setEmailError(null);
 		}
+		console.log(e.target.name);
+	};
+
+	const onFocus = (e) => {
+		if (e.target.name === 'email' && errorEmail) {
+			setEmailError(null);
+			setErrorPassword(null);
+		} else if (e.target.name === 'password' && errorPassword) {
+			setErrorPassword(null);
+		}
 	};
 
 	const onPasswordBlur = (e) => {
-		setPassword(e.target.value );
+		setPassword(e.target.value);
 		if (e.target.value.length < 11) {
 			setErrorPassword('Пароль должен быть не короче 10 символов');
 		} else {
-			setEmailError( null);
 			setErrorPassword(null);
 		}
 	};
@@ -42,7 +50,7 @@ export const App = () => {
 	const onReplayPasswordChange = (e) => {
 		setReplayPassword(e.target.value);
 		if (e.target.value !== password) {
-			setErrorReplayPassword('Введенные пароли не совпадают');
+			setErrorReplayPassword('Введенные пароли должны совпадать');
 		} else if (e.target.value === password) {
 			setErrorReplayPassword(null);
 			submitButtonRef.current.focus();
@@ -51,7 +59,7 @@ export const App = () => {
 
 	const onSubmitForm = (event) => {
 		event.preventDefault();
-		sendForm({email, password});
+		sendForm({ email, password });
 	};
 
 	return (
@@ -65,8 +73,7 @@ export const App = () => {
 			onReplayPasswordChange={onReplayPasswordChange}
 			errorReplayPassword={errorReplayPassword}
 			submitButtonRef={submitButtonRef}
-
-
+			onFocus={onFocus}
 		/>
 	);
 };

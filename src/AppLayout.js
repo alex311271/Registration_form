@@ -12,7 +12,7 @@ export const AppLayout = ({
 	errorReplayPassword,
 	onReplayPasswordChange,
 	submitButtonRef,
-
+	onFocus,
 }) => (
 	<div className={styles.App_header}>
 		<form className={styles.form} onSubmit={onSubmitForm}>
@@ -23,6 +23,7 @@ export const AppLayout = ({
 				value={email}
 				placeholder="Введите адрес почты"
 				onBlur={onEmailBlur}
+				onFocus={onFocus}
 			></input>
 			{errorEmail && <div className={styles.error}>{errorEmail}</div>}
 			<input
@@ -32,6 +33,7 @@ export const AppLayout = ({
 				value={password}
 				placeholder="Введите пароль"
 				onBlur={onPasswordBlur}
+				onFocus={onFocus}
 			></input>
 			{errorPassword && <div className={styles.error}>{errorPassword}</div>}
 			<input
@@ -47,7 +49,7 @@ export const AppLayout = ({
 				ref={submitButtonRef}
 				type="submit"
 				name="submit"
-				disabled={!email&&!password&&!replayPassword}
+				disabled={!email && !password && !replayPassword}
 			>
 				Отправить
 			</button>
