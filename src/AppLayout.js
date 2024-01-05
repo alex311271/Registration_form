@@ -47,7 +47,7 @@ export const AppLayout = ({
 				ref={submitButtonRef}
 				type="submit"
 				name="submit"
-				disabled={!replayPassword || errorReplayPassword}
+				disabled={!email&&!password&&!replayPassword}
 			>
 				Отправить
 			</button>
