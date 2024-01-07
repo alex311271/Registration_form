@@ -1,5 +1,6 @@
 import { AppLayout } from './AppLayout';
 import { useState, useRef } from 'react';
+import { ERRORS } from './Constants';
 
 const sendForm = (formData) => {
 	console.log(formData);
@@ -26,7 +27,6 @@ export const App = () => {
 		} else {
 			setEmailError(null);
 		}
-		console.log(e.target.name);
 	};
 
 	const onFocus = (e) => {
@@ -40,8 +40,8 @@ export const App = () => {
 
 	const onPasswordBlur = (e) => {
 		setPassword(e.target.value);
-		if (e.target.value.length < 11) {
-			setErrorPassword('Пароль должен быть не короче 10 символов');
+		if (e.target.value.length < 8) {
+			setErrorPassword('Пароль должен быть не короче 8 символов');
 		} else {
 			setErrorPassword(null);
 		}
