@@ -23,7 +23,7 @@ export const App = () => {
 				String(e.target.value),
 			)
 		) {
-			setEmailError('Неверный адрес почты');
+			setEmailError(ERRORS.email);
 		} else {
 			setEmailError(null);
 		}
@@ -41,7 +41,7 @@ export const App = () => {
 	const onPasswordBlur = (e) => {
 		setPassword(e.target.value);
 		if (e.target.value.length < 8) {
-			setErrorPassword('Пароль должен быть не короче 8 символов');
+			setErrorPassword(ERRORS.password);
 		} else {
 			setErrorPassword(null);
 		}
@@ -50,7 +50,7 @@ export const App = () => {
 	const onReplayPasswordChange = (e) => {
 		setReplayPassword(e.target.value);
 		if (e.target.value !== password) {
-			setErrorReplayPassword('Введенные пароли должны совпадать');
+			setErrorReplayPassword(ERRORS.replayPassword);
 		} else if (e.target.value === password) {
 			setErrorReplayPassword(null);
 			submitButtonRef.current.focus();
