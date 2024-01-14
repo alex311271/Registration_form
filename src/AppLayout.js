@@ -1,18 +1,15 @@
 import styles from './App.module.css';
 
 export const AppLayout = ({
-	errorEmail,
 	email,
 	onSubmitForm,
-	onEmailBlur,
 	password,
-	errorPassword,
-	onPasswordBlur,
+	onCheckErrorsBlur,
 	replayPassword,
-	errorReplayPassword,
-	onReplayPasswordChange,
 	submitButtonRef,
 	onFocus,
+	formData,
+	onChangeField,
 }) => (
 	<div className={styles.App_header}>
 		<form className={styles.form} onSubmit={onSubmitForm}>
@@ -22,34 +19,48 @@ export const AppLayout = ({
 				name="email"
 				value={email}
 				placeholder="Введите адрес почты"
-				onBlur={onEmailBlur}
+				onBlur={onCheckErrorsBlur}
 				onFocus={onFocus}
+				onChange={onChangeField}
 			></input>
-			{errorEmail && <div className={styles.error}>{errorEmail}</div>}
+			{formData.errorEmail && <div className={styles.error}>{formData.errorEmail}</div>}
 			<input
 				className={styles.field}
 				type="password"
 				name="password"
 				value={password}
 				placeholder="Введите пароль"
-				onBlur={onPasswordBlur}
+				onBlur={onCheckErrorsBlur}
 				onFocus={onFocus}
+				onChange={onChangeField}
 			></input>
-			{errorPassword && <div className={styles.error}>{errorPassword}</div>}
+			{formData.errorPassword && (
+				<div className={styles.error}>{formData.errorPassword}</div>
+			)}
 			<input
 				className={styles.field}
 				type="password"
 				name="replayPassword"
 				value={replayPassword}
 				placeholder="Повторите пароль"
-				onChange={onReplayPasswordChange}
+				onChange={onChangeField}
+				onBlur={onCheckErrorsBlur}
+				onFocus={onFocus}
 			></input>
-			{errorReplayPassword && <div className={styles.error}>{errorReplayPassword}</div>}
+			{formData.errorReplayPassword && (
+				<div className={styles.error}>{formData.errorReplayPassword}</div>
+			)}
 			<button
 				ref={submitButtonRef}
 				type="submit"
 				name="submit"
-				disabled={!email && !password && !replayPassword}
+				disabled={
+					formData.errorEmail ||
+					!formData.email ||
+					formData.errorPassword ||
+					!formData.password ||
+					formData.errorReplayPassword
+				}
 			>
 				Отправить
 			</button>

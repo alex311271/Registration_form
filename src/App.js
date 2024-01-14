@@ -3,77 +3,87 @@ import { useState, useRef } from 'react';
 import { ERRORS } from './Constants';
 
 const sendForm = (formData) => {
-	console.log(formData);
+	console.log(`Email:${formData.email}  Password:${formData.password}`);
 };
 
 export const App = () => {
-	const [email, setEmail] = useState('');
-	const [errorEmail, setEmailError] = useState('');
-	const [password, setPassword] = useState('');
-	const [errorPassword, setErrorPassword] = useState('');
-	const [replayPassword, setReplayPassword] = useState('');
-	const [errorReplayPassword, setErrorReplayPassword] = useState('');
+	const [formData, setFormData] = useState({
+		email: null,
+		password: null,
+		errorEmail: null,
+		errorPassword: null,
+		errorReplayPassword: null,
+	});
 
 	const submitButtonRef = useRef(null);
 
-	const onEmailBlur = (e) => {
-		setEmail(e.target.value);
-		if (
-			!/^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu.test(
-				String(e.target.value),
-			)
-		) {
-			setEmailError(ERRORS.email);
-		} else {
-			setEmailError(null);
+	const onChangeField = (e) => {
+		if (e.target.name === 'email') {
+			setFormData({ ...formData, email: e.target.value });
+		} else if (e.target.name === 'password') {
+			if (e.target.value.length > 20) {
+				setFormData({ ...formData, errorPassword: ERRORS.errorPasswordMax });
+			} else {
+				setFormData({ ...formData, errorPassword: null });
+			}
+			setFormData({ ...formData, password: e.target.value });
+		} else if (e.target.name === 'replayPassword') {
+			if (e.target.value === formData.password) {
+				setFormData({ ...formData, replayPassword: e.target.value });
+				submitButtonRef.current.focus();
+			}
 		}
 	};
 
 	const onFocus = (e) => {
-		if (e.target.name === 'email' && errorEmail) {
-			setEmailError(null);
-			setErrorPassword(null);
-		} else if (e.target.name === 'password' && errorPassword) {
-			setErrorPassword(null);
+		if (e.target.name === 'email' && formData.errorEmail) {
+			setFormData({ ...formData, errorEmail: null, errorPassword: null });
+		} else if (e.target.name === 'password') {
+			setFormData({ ...formData, errorPassword: null, errorReplayPassword: null });
+		} else if (e.target.name === 'replayPassword' && formData.errorReplayPassword) {
+			setFormData({ ...formData, errorReplayPassword: null });
 		}
 	};
 
-	const onPasswordBlur = (e) => {
-		setPassword(e.target.value);
-		if (e.target.value.length < 8) {
-			setErrorPassword(ERRORS.password);
-		} else {
-			setErrorPassword(null);
-		}
-	};
-
-	const onReplayPasswordChange = (e) => {
-		setReplayPassword(e.target.value);
-		if (e.target.value !== password) {
-			setErrorReplayPassword(ERRORS.replayPassword);
-		} else if (e.target.value === password) {
-			setErrorReplayPassword(null);
-			submitButtonRef.current.focus();
+	const onCheckErrorsBlur = (e) => {
+		if (e.target.name === 'email') {
+			if (
+				!/^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu.test(
+					String(e.target.value),
+				)
+			) {
+				setFormData({ ...formData, errorEmail: ERRORS.errorEmail });
+			} else {
+				setFormData({ ...formData, errorEmail: null });
+			}
+		} else if (e.target.name === 'password') {
+			if (e.target.value.length < 8) {
+				setFormData({ ...formData, errorPassword: ERRORS.errorPasswordMin });
+			} else {
+				setFormData({ ...formData, errorPassword: null });
+			}
+		} else if (e.target.name === 'replayPassword') {
+			if (e.target.value !== formData.password) {
+				setFormData({ ...formData, errorReplayPassword: ERRORS.errorReplayPassword });
+			} else {
+				setFormData({ ...formData, errorReplayPassword: null });
+			}
 		}
 	};
 
 	const onSubmitForm = (event) => {
 		event.preventDefault();
-		sendForm({ email, password });
+		sendForm(formData);
 	};
 
 	return (
 		<AppLayout
+			formData={formData}
 			onSubmitForm={onSubmitForm}
-			onEmailBlur={onEmailBlur}
-			errorEmail={errorEmail}
-			onPasswordBlur={onPasswordBlur}
-			errorPassword={errorPassword}
-			replayPassword={replayPassword}
-			onReplayPasswordChange={onReplayPasswordChange}
-			errorReplayPassword={errorReplayPassword}
+			onCheckErrorsBlur={onCheckErrorsBlur}
 			submitButtonRef={submitButtonRef}
 			onFocus={onFocus}
+			onChangeField={onChangeField}
 		/>
 	);
 };
