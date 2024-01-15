@@ -1,66 +1,44 @@
 import styles from './App.module.css';
 
 export const AppLayout = ({
-	email,
-	onSubmitForm,
-	password,
-	onCheckErrorsBlur,
-	replayPassword,
-	submitButtonRef,
-	onFocus,
-	formData,
-	onChangeField,
+	emailError,
+	passwordError,
+	replayPasswordError,
+	register,
+	handleSubmit,
+	sendForm,
 }) => (
 	<div className={styles.App_header}>
-		<form className={styles.form} onSubmit={onSubmitForm}>
+		<form className={styles.form} onSubmit={handleSubmit(sendForm)} noValidate>
 			<input
 				className={styles.field}
 				type="email"
 				name="email"
-				value={email}
 				placeholder="Введите адрес почты"
-				onBlur={onCheckErrorsBlur}
-				onFocus={onFocus}
-				onChange={onChangeField}
+				{...register('email')}
 			></input>
-			{formData.errorEmail && <div className={styles.error}>{formData.errorEmail}</div>}
+			{emailError && <div className={styles.error}>{emailError}</div>}
 			<input
 				className={styles.field}
 				type="password"
 				name="password"
-				value={password}
 				placeholder="Введите пароль"
-				onBlur={onCheckErrorsBlur}
-				onFocus={onFocus}
-				onChange={onChangeField}
+				{...register('password')}
 			></input>
-			{formData.errorPassword && (
-				<div className={styles.error}>{formData.errorPassword}</div>
-			)}
+			{passwordError && <div className={styles.error}>{passwordError}</div>}
 			<input
 				className={styles.field}
 				type="password"
 				name="replayPassword"
-				value={replayPassword}
 				placeholder="Повторите пароль"
-				onChange={onChangeField}
-				onBlur={onCheckErrorsBlur}
-				onFocus={onFocus}
+				{...register('replayPassword')}
 			></input>
-			{formData.errorReplayPassword && (
-				<div className={styles.error}>{formData.errorReplayPassword}</div>
-			)}
+			{replayPasswordError && <div className={styles.error}>{replayPasswordError}</div>}
 			<button
-				ref={submitButtonRef}
+				// ref={submitButtonRef}
 				type="submit"
 				name="submit"
-				disabled={
-					formData.errorEmail ||
-					!formData.email ||
-					formData.errorPassword ||
-					!formData.password ||
-					formData.errorReplayPassword
-				}
+				disabled={emailError || passwordError || replayPasswordError}
 			>
 				Отправить
 			</button>
