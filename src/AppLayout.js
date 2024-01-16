@@ -7,6 +7,7 @@ export const AppLayout = ({
 	register,
 	handleSubmit,
 	sendForm,
+	submitButtonRef,
 }) => (
 	<div className={styles.App_header}>
 		<form className={styles.form} onSubmit={handleSubmit(sendForm)} noValidate>
@@ -35,7 +36,7 @@ export const AppLayout = ({
 			></input>
 			{replayPasswordError && <div className={styles.error}>{replayPasswordError}</div>}
 			<button
-				// ref={submitButtonRef}
+				ref={submitButtonRef}
 				type="submit"
 				name="submit"
 				disabled={emailError || passwordError || replayPasswordError}

@@ -4,4 +4,5 @@ export const ERRORS = {
 	errorPasswordMin: 'Пароль должен быть не короче 8 символов',
 	errorPasswordMax: 'Пароль не должен превыщать 20 символов',
 	errorReplayPassword: 'Введенные пароли должны совпадать',
+	requiredError: 'Поле обязательно для заполнения'
 };
